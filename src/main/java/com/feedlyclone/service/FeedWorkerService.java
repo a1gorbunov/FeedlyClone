@@ -1,7 +1,9 @@
 package com.feedlyclone.service;
 
-import com.rometools.rome.feed.synd.SyndFeed;
+import com.feedlyclone.domain.entity.FeedMessage;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * service for process syndicate feeds
@@ -9,5 +11,5 @@ import org.springframework.stereotype.Service;
 @Service
 public interface FeedWorkerService {
 
-    SyndFeed readFeedFromUrl(String url);
+    List<FeedMessage> readFeedFromUrl(String url);
 }

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 @Service
@@ -20,7 +21,14 @@ public class FeedMessageServiceImpl implements FeedMessageService {
     @Override
     @Transactional
     public List<FeedMessage> getAll(){
-        LOGGER.debug("trying to get all feed messages");
+        LOGGER.debug("all feed messages");
         return feedMessageRepository.findAll();
+    }
+
+    @Override
+    @Transactional
+    public List<FeedMessage> saveBatch(Collection<FeedMessage> feedMessages){
+        LOGGER.debug("save feedMessage collection");
+        return feedMessageRepository.save(feedMessages);
     }
 }

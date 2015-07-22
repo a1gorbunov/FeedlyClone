@@ -2,8 +2,8 @@ package com.feedlyclone.service;
 
 import com.feedlyclone.domain.entity.FeedMessage;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -13,4 +13,6 @@ import java.util.List;
 public interface FeedMessageService {
 
     List<FeedMessage> getAll();
+
+    List<FeedMessage> saveBatch(Collection<FeedMessage> feedMessages);
 }

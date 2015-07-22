@@ -2,6 +2,7 @@ package com.feedlyclone.domain.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
+import java.util.Date;
 
 /**
  * represent one rss message
@@ -18,7 +19,7 @@ public class FeedMessage extends AbstractModel {
 
     private String author;
 
-    private String guid;
+    private Date publishDate;
     /** url for image */
     private String image;
     /** url for video */
@@ -56,14 +57,6 @@ public class FeedMessage extends AbstractModel {
         this.author = author;
     }
 
-    public String getGuid() {
-        return guid;
-    }
-
-    public void setGuid(String guid) {
-        this.guid = guid;
-    }
-
     public String getImage() {
         return image;
     }
@@ -78,5 +71,13 @@ public class FeedMessage extends AbstractModel {
 
     public void setVideo(String video) {
         this.video = video;
+    }
+
+    public Date getPublishDate() {
+        return publishDate;
+    }
+
+    public void setPublishDate(Date publishDate) {
+        this.publishDate = publishDate;
     }
 }

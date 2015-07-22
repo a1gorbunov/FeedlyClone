@@ -1,17 +1,13 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.domain.entity.FeedMessage;
 import com.feedlyclone.service.FeedMessageService;
 import com.feedlyclone.service.FeedWorkerService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Controller
 public class FeedController {
@@ -24,15 +20,10 @@ public class FeedController {
     private FeedWorkerService feedWorkerService;
 
     @RequestMapping(value = "/addFeed")
-    public String addFeed(@RequestParam("newFeedValue") String newFeedValue){
-        LOGGER.debug("add new feed: " + newFeedValue);
-
+    public String addFeed(@RequestParam("newFeedValue") String newFeedUrl, Model model){
+        LOGGER.debug("add new feed: " + newFeedUrl);
+        model.addAttribute("feedMessages", feedWorkerService.readFeedFromUrl(newFeedUrl));
+        model.addAttribute("categoryName", "Some category");
         return "home";
     }
-
-    @ModelAttribute("feedMessages")
-    public List<FeedMessage> feedMessages() {
-        return feedMessageService.getAll();
-    }
-
 }

@@ -2,7 +2,6 @@ import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 
-import java.io.BufferedReader;
 import java.net.URL;
 
 public class TestFeed {
