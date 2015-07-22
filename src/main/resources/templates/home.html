@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+        <title>Hello Spring Boot!</title>
+        
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+
+<div id="addFeed" style="margin-left: auto; margin-right: auto;width: 500px;">
+    <form th:action="@{/addFeed}">
+        <div>
+            <div style="font-size: 16px;color: #494949;font-weight: bold;font-family: sans-serif;">
+                Pick a site or blog you want to keep up with (specify https protocol when need):
+            </div>
+            <input type="submit" value="Add"/>
+        </div>
+        <div>
+            <input id="newFeedValue" name="newFeedValue" autocorrect="off" autocapitalize="off" type="text"
+                   placeholder="search by title, URL or #topic" value="" style="padding: 15px;width: 500px; font-size: 16px;"/>
+        </div>
+    </form>
+</div>
+
+<div th:if="${not #lists.isEmpty(feedMessages)}" style="width: 927px; margin-left: auto; margin-right: auto;">
+    <div id="feedlyHeader" style="margin-bottom: 50px;"><h1>Feedly Name</h1></div>
+    <div id="feedlyPart">
+        <div id="serction_entries">
+            <div th:each="feedMessage : ${feedMessages}">
+                <div id="feedImage"><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></div>
+                <div><h2 th:text="${feedMessage.title}">Title</h2></div>
+                <div style="max-height: 48px;" th:text="${feedMessage.description}">Description</div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
