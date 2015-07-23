@@ -1,6 +1,7 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.dto.FeedMessageView;
+import com.feedlyclone.util.SyndFeedHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -11,5 +12,5 @@ import java.util.List;
 @Service
 public interface FeedWorkerService {
 
-    List<FeedMessageView> readFeedFromUrl(String url);
+    SyndFeedHolder readFeedFromUrl(String url);
 }

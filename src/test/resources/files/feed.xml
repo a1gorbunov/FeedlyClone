@@ -3,7 +3,7 @@
     <channel>
         <title>TUT.BY: Новости ТУТ - Экономика и бизнес</title>
         <link>http://news.tut.by/</link>
-        <descriptionClean>TUT.BY: Новости ТУТ - Экономика и бизнес</descriptionClean>
+        <description>TUT.BY: Новости ТУТ - Экономика и бизнес</description>
         <language>ru</language>
         <image>
             <url>http://img.tyt.by/i/rss/news/logo.gif</url>
@@ -17,7 +17,7 @@
         <item>
             <title>Title test 1</title>
             <link>http://news.tut.by/economics/457313.html?utm_campaign=news-feed&#x26;utm_medium=rss&#x26;utm_source=rss-news</link>
-            <descriptionClean><p>Test descriptionClean 1</p></descriptionClean>
+            <description><p>Test description 1</p></description>
             <atom:author>
                 <atom:name>TUT.BY</atom:name>
                 <atom:uri>http://news.tut.by/author/490~613.html</atom:uri>

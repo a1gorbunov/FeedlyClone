@@ -1,7 +1,7 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.Application;
-import com.feedlyclone.dto.FeedMessageView;
+import com.feedlyclone.util.SyndFeedHolder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +10,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.net.URL;
 import java.util.Calendar;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -28,11 +27,12 @@ public class FeedWorkerServiceTest {
         URL resourceFile = getClass().getClassLoader().getResource("files/feed.xml");
         assertNotNull(resourceFile);
 
-        List<FeedMessageView> feedMessageViews = feedWorkerService.readFeedFromUrl("file://" + resourceFile.getPath());
-        assertNotNull(feedMessageViews);
-        assertFalse(feedMessageViews.isEmpty());
+        SyndFeedHolder feedHolder = feedWorkerService.readFeedFromUrl("file://" + resourceFile.getPath());
+        assertNotNull(feedHolder);
+        assertNotNull(feedHolder.getFeedMessages());
+        assertFalse(feedHolder.getFeedMessages().isEmpty());
 
-        feedMessageViews.stream().forEach(feedMessage -> {
+        feedHolder.getFeedMessages().stream().forEach(feedMessage -> {
             assertEquals("", feedMessage.getAuthor());
             assertEquals("Test description 1", feedMessage.getDescriptionClean());
             assertEquals("<p>Test description 1</p>", feedMessage.getDescriptionFull());
@@ -44,5 +44,9 @@ public class FeedWorkerServiceTest {
             calendar.setTimeInMillis(1437637260000L);
             assertEquals(calendar.getTime(), feedMessage.getPublishDate());
         });
+        assertEquals("TUT.BY: Новости ТУТ - Экономика и бизнес", feedHolder.getTitle());
+        assertEquals("http://news.tut.by/", feedHolder.getLink());
+        assertEquals("TUT.BY: Новости ТУТ - Экономика и бизнес", feedHolder.getDescription());
+        assertEquals(1437638916000L, feedHolder.getPublishedDate().getTime());
     }
 }

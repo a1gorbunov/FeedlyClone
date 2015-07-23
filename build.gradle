@@ -1,8 +1,24 @@
 group 'com.feedlyclone'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath "org.springframework.boot:spring-boot-gradle-plugin:1.2.5.RELEASE"
+        classpath 'org.springframework:springloaded:1.2.0.RELEASE'
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'war'
+apply plugin: 'idea'
+
+idea {
+    module {
+        inheritOutputDirs = false
+        outputDir = file("$buildDir/classes/main/")
+    }
+}
 
 sourceCompatibility = 1.8
 

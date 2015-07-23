@@ -3,6 +3,7 @@ package com.feedlyclone.service.impl;
 import com.feedlyclone.dto.FeedMessageView;
 import com.feedlyclone.service.FeedMessageService;
 import com.feedlyclone.service.FeedWorkerService;
+import com.feedlyclone.util.SyndFeedHolder;
 import com.rometools.rome.feed.synd.SyndEntry;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
@@ -28,7 +29,7 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
     private FeedMessageService feedMessageService;
 
     @Override
-    public List<FeedMessageView> readFeedFromUrl(String url) {
+    public SyndFeedHolder readFeedFromUrl(String url) {
         if (url == null || url.isEmpty()) {
             LOGGER.debug("empty url");
             return null;
@@ -52,7 +53,13 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
         }
 
         if (feed != null){
-            return copySyndFeed(feed);
+            SyndFeedHolder feedHolder = new SyndFeedHolder(copySyndFeed(feed));
+            feedHolder.setLink(feed.getLink());
+            feedHolder.setDescription(feed.getDescription());
+            feedHolder.setPublishedDate(feed.getPublishedDate());
+            feedHolder.setTitle(feed.getTitle());
+
+            return feedHolder;
         }
 
         return null;
