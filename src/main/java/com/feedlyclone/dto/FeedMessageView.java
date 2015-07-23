@@ -1,15 +1,17 @@
-package com.feedlyclone.domain.entity;
+package com.feedlyclone.dto;
+
+import com.feedlyclone.domain.entity.AbstractModel;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.util.Date;
 
 /**
- * represent one rss message
+ * represent one dto rss message
  */
-@Entity
-@Table(name = "feed_message")
-public class FeedMessage extends AbstractModel {
+public class FeedMessageView {
+
+    private Integer id;
 
     private String title;
 
@@ -26,6 +28,14 @@ public class FeedMessage extends AbstractModel {
     private String image;
     /** url for video */
     private String video;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public String getTitle() {
         return title;

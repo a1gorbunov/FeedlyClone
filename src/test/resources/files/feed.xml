@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:media="http://search.yahoo.com/mrss/">
+    <channel>
+        <title>TUT.BY: Новости ТУТ - Экономика и бизнес</title>
+        <link>http://news.tut.by/</link>
+        <descriptionClean>TUT.BY: Новости ТУТ - Экономика и бизнес</descriptionClean>
+        <language>ru</language>
+        <image>
+            <url>http://img.tyt.by/i/rss/news/logo.gif</url>
+            <title>TUT.BY: Новости ТУТ - Экономика и бизнес</title>
+            <link>http://news.tut.by/</link>
+        </image>
+        <pubDate>Thu, 23 Jul 2015 11:08:36 +0300</pubDate>
+        <lastBuildDate>Thu, 23 Jul 2015 10:57:17 +0300</lastBuildDate>
+        <ttl>5</ttl>
+        <atom:link href="http://news.tut.by/rss/economics.rss" rel="self" type="application/rss+xml" />
+        <item>
+            <title>Title test 1</title>
+            <link>http://news.tut.by/economics/457313.html?utm_campaign=news-feed&#x26;utm_medium=rss&#x26;utm_source=rss-news</link>
+            <descriptionClean><p>Test descriptionClean 1</p></descriptionClean>
+            <atom:author>
+                <atom:name>TUT.BY</atom:name>
+                <atom:uri>http://news.tut.by/author/490~613.html</atom:uri>
+            </atom:author>
+            <atom:author>
+                <atom:name>Александр Обухович</atom:name>
+            </atom:author>
+            <category domain="http://news.tut.by/economics/">Экономика и бизнес</category>
+            <enclosure url="http://img.tyt.by/n/0f/8/vodovorot_2.jpg" type="image/jpeg" length="52329" />
+            <guid isPermaLink="true">http://news.tut.by/economics/457313.html?utm_campaign=news-feed&#x26;utm_medium=rss&#x26;utm_source=rss-news</guid>
+            <pubDate>Thu, 23 Jul 2015 10:41:00 +0300</pubDate>
+            <media:content url="http://img.tyt.by/n/0f/8/vodovorot_2.jpg" type="image/jpeg" medium="image" height="378" width="570" fileSize="52329" />
+        </item>
+    </channel>
+</rss>

@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title></title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js">
+    </script>
+</head>
+<body>
+
+<script th:inline="javascript">
+    var root = $('#contentRoot');
+    root.empty();
+    root.html(/*[[${descriptionFull}]]*/);
+</script>
+
+<div id="contentRoot"></div>
+
+</body>
+</html>

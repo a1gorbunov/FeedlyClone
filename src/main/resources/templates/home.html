@@ -1,52 +1,149 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-        <title>Hello Spring Boot!</title>
-        
+    <meta charset="utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+    <link th:href="@{/resources/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
+
+    <title>Hello Spring Boot!</title>
+
+    <style>
+        #addFeed {
+            margin-left: auto;
+            margin-right: auto;
+            width: 500px;
+        }
+
+        .entretFeedText {
+            font-size: 16px;
+            color: #494949;
+            font-weight: bold;
+            font-family: sans-serif;
+        }
+
+        .topMargin {
+            margin-top: 20px;
+        }
+
+        #newFeedValue {
+            padding: 15px;
+            width: 500px;
+            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .newsBand {
+            width: 927px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .verticalAlign {
+            vertical-align: top;
+        }
+
+        .subText {
+            font-size: 10px;
+        }
+
+        .paddingLeft {
+            padding-left: 20px;
+        }
+
+        .contentPadding{
+            padding: 5px;
+        }
+    </style>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script th:src="@{/resources/js/bootstrap.min.js}" src="../static/js/bootstrap.min.js"></script>
+    <script>
+        function openFullMode(feedMessageView) {
+            $.post("/fullMode", {
+                "author": feedMessageView.author,
+                "descriptionClean": feedMessageView.descriptionClean,
+                "descriptionFull": feedMessageView.descriptionFull,
+                "image": feedMessageView.image,
+                "link": feedMessageView.link,
+                "title": feedMessageView.title,
+                "publishDate": feedMessageView.publishDate
+            })
+        }
+    </script>
 </head>
 <body>
 
-<div id="addFeed" style="margin-left: auto; margin-right: auto;width: 500px;">
+<div class="col-sm-3 col-md-2 sidebar">
+    <ul class="nav nav-sidebar">
+        <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
+        <li><a href="#">Reports</a></li>
+        <li><a href="#">Analytics</a></li>
+        <li><a href="#">Export</a></li>
+    </ul>
+    <ul class="nav nav-sidebar">
+        <li><a href="">Nav item</a></li>
+        <li><a href="">Nav item again</a></li>
+        <li><a href="">One more nav</a></li>
+        <li><a href="">Another nav item</a></li>
+        <li><a href="">More navigation</a></li>
+    </ul>
+    <ul class="nav nav-sidebar">
+        <li><a href="">Nav item again</a></li>
+        <li><a href="">One more nav</a></li>
+        <li><a href="">Another nav item</a></li>
+    </ul>
+</div>
+
+<div id="addFeed">
     <form th:action="@{/addFeed}">
         <div>
-            <div style="font-size: 16px;color: #494949;font-weight: bold;font-family: sans-serif;">
+            <div class="entretFeedText">
                 Pick a site or blog you want to keep up with (specify https protocol when need):
             </div>
-            <input type="submit" value="Add" style="margin-top: 20px;"/>
+            <input type="submit" value="Add" class="topMargin"/>
         </div>
         <div>
             <input id="newFeedValue" name="newFeedValue" autocorrect="off" autocapitalize="off" type="text"
-                   placeholder="search by title, URL or #topic" value="" style="padding: 15px;width: 500px; font-size: 16px;margin-top: 20px;"/>
+                   placeholder="search by title, URL or #topic" value=""/>
         </div>
     </form>
 </div>
 
-<div th:if="${not #lists.isEmpty(feedMessages)}" style="width: 927px; margin-left: auto; margin-right: auto;">
-    <div id="feedlyHeader" style="margin-bottom: 50px;"><h1 th:text="${categoryName}">Category name</h1></div>
-    <div id="feedlyPart">
-        <div id="serction_entries" style="display: block">
-            <div th:each="feedMessage : ${feedMessages}" style="margin-top: 20px;">
-                <table>
-                    <tr>
-                        <td style="vertical-align: top;"><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png" /></td>
-                        <td style="vertical-align: top;">
-                            <div><a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a></div>
-                            <div><span th:text="${feedMessage.description}">Description</span></div>
-                            <div><span style="font-size: 10px;" th:text="${feedMessage.publishDate}">Publish date</span></div>
-                        </td>
-                    </tr>
-                </table>
-                <!--<div id="feedImage"><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></div>
-                <div>
-                    <a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a>
-                    <div>
-                        <span th:text="${feedMessage.description}" th:remove="tag">Description</span>
-                        <span style="font-size: 8px;" th:text="${feedMessage.publishDate}">Publish date</span>
-                    </div>
-                </div>-->
+<div th:if="${not #lists.isEmpty(feedMessages)}" class="newsBand">
+    <div id="feedlyHeader"><h1 th:text="${categoryName}">Category name</h1></div>
+    <div id="feedlyPart" class="topMargin">
+        <div id="section_entries" class="col-sm-4" style="width: inherit;">
+            <div class="topMargin">
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="feedMessageView : ${feedMessages}">
+                        <table>
+                            <tr>
+                                <td><img th:src="${feedMessageView.image}" src="../static/images/feedly-logo-black.png"/></td>
+                                <td class="paddingLeft">
+                                    <div><a th:href="${feedMessageView.link}" th:text="${feedMessageView.title}">Title</a>
+                                    </div>
+                                    <div class="contentPadding">
+                                        <span th:if="${#strings.length(feedMessageView.descriptionClean) gt 500}"
+                                              th:text="${#strings.substring(feedMessageView.descriptionClean,0, 500)}">Description</span>
+                                        <span th:if="${#strings.length(feedMessageView.descriptionClean) le 500}"
+                                              th:text="${feedMessageView.descriptionClean}">Description</span>
+                                    </div>
+                                    <div><span class="subText" th:text="${feedMessageView.publishDate}">Publish date</span></div>
+                                </td>
+                                <td class="paddingLeft">
+                                    <a th:href="${feedMessageView.link}">to source</a>
+                                    <a th:href="@{/fullMode(id=${feedMessageView.id})}" class="topMargin">full mode</a>
+                                </td>
+                            </tr>
+                        </table>
+                    </li>
+                </ul>
             </div>
         </div>
+
     </div>
 </div>
 </body>
