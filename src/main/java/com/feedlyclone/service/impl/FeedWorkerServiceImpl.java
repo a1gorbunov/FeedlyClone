@@ -25,9 +25,6 @@ import java.util.List;
 public class FeedWorkerServiceImpl implements FeedWorkerService {
     private static final Logger LOGGER = Logger.getLogger(FeedWorkerServiceImpl.class.getSimpleName());
 
-    @Autowired
-    private FeedMessageService feedMessageService;
-
     @Override
     public SyndFeedHolder readFeedFromUrl(String url) {
         if (url == null || url.isEmpty()) {

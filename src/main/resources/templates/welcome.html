@@ -1,70 +1,40 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head>
-        <title>Hello Spring Boot!</title>
-        
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-    <style>
-        .mainText {
-            font-size: 18px;
-            text-align: center;
-            line-height: 1.4em;
-            max-width: 450px;
-            margin-left: auto;
-            margin-right: auto;
-            margin-bottom: 28px;
-            font-weight: 300;
-            color: #999;
-            margin-top: 28px;
-        }
 
-        .loginButton {
-            background-color: #EFEFEF;
-            color: #999;
-            display: inline-block;
-            line-height: 34px;
-            text-decoration: none;
-            font-size: 12px;
-            border-radius: 3px;
-            text-align: center;
-            cursor: pointer;
-            padding-left: 17px;
-            padding-right: 17px;
-            transition: all 0.350s linear;
-        }
+    <title>Hello Spring Boot!</title>
+        
+    <link th:href="@{/resources/css/bootstrap.min.css}" href="../static/css/bootstrap.min.css" rel="stylesheet"/>
 
-        a:hover {
-            text-decoration: underline;
-        }
-
-        .button.primary {
-            display: inline-block;
-            position: relative;
-            margin: 0px;
-            padding: 14px 20px 14px 20px;
-            font-size: 16px;
-            line-height: 17px;
-            text-decoration: none;
-            border-radius: 3px;
-            color: white;
-            appearance: none;
-            cursor: pointer;
-            z-index: 1000;
-            -webkit-font-smoothing: antialiased;
-            background-color: #2bb24c;
-            border: 1px solid #008334;
-            box-shadow: 0px 1px 2px rgba(0, 0, 0, 0.2);
-            margin-left: 10px;
-            margin-right: 10px;
-            font-weight: bold;
-        }
-    </style>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script>
+        // <![CDATA[
+        $( document ).ready(function(){
+            $.ajax({
+                url : "/username",
+                success : function(data) {
+                    if (data != null && data.length > 0){
+                        $('#loginLink').hide();
+                        var user = $('#userName');
+                        user.show();
+                        user.html('Welcome, '+data+'!');
+                    } else{
+                        $('#loginLink').show();
+                        $('#userName').hide();
+                    }
+                }
+            });
+        });
+        // ]]>
+    </script>
 </head>
 <body>
 <div id="mainBar">
     <div id="feedlyPart" style="min-height: 979px;position: relative;margin-left: 30%;margin-right: 30%;">
         <div class="discoverHeader">
-            <a class="loginButton" th:href="@{/login}" style="float:right">Login</a>
+            <a id="loginLink" class="well lead" th:href="@{/login}" style="float:right">Login</a>
+            <span id="userName" class="loginButton well lead" style="float:right"></span>
             <img data-uri="welcome" class="logo" src="../static/images/feedly-logo-black.png" th:src="@{/resources/images/feedly-logo-black.png}" style="cursor:pointer" height="24"/>
         </div>
 
@@ -76,10 +46,11 @@
             </div>
         </div>
         <div style="margin-top: 10px;text-align: center;">
-            <a th:href="@{/home}" class="button primary"  style="width:200px">Get started</a>
+            <a th:href="@{/home}" class="btn btn-lg btn-success"  style="width:200px">Get started</a>
         </div>
         <img src="../static/images/onboarding-devices-v3.png" th:src="@{/resources/images/onboarding-devices-v3.png}" width="850px" height="454px"/>
     </div>
 </div>
+
 </body>
 </html>

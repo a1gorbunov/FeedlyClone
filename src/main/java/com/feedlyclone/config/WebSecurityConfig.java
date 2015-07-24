@@ -19,6 +19,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .anyRequest()
                 .authenticated()
+                .antMatchers("/welcome")
+                .permitAll()
+                .anyRequest()
+                .authenticated()
                 .and()
             .formLogin()
                 .loginPage("/login")
@@ -32,6 +36,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth
             .inMemoryAuthentication()
-                .withUser("user@mail.com").password("password").roles("USER");
+                .withUser("user").password("password").roles("USER");
     }
 }
