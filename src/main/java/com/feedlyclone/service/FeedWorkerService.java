@@ -12,5 +12,9 @@ import java.util.List;
 @Service
 public interface FeedWorkerService {
 
+    /**
+     * get feed band by specific url
+     * @return holder which contains all required information
+     */
     SyndFeedHolder readFeedFromUrl(String url);
 }

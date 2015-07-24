@@ -11,7 +11,7 @@
 
     <title>Hello Spring Boot!</title>
 
-
+    <script th:src="@{/resources/js/common.js}"></script>
     <script>
         function openFullMode(articleId) {
             $.ajax({
@@ -35,7 +35,7 @@
 
         <div th:include="menu :: menu" class="col-sm-3 col-md-2 sidebar"></div>
 
-        <div id="addFeed">
+        <div style="display: none;" id="addFeed" >
             <form th:action="@{/addFeed}">
                 <div>
                     <div class="entretFeedText">
@@ -45,7 +45,7 @@
                 <div>
                     <input id="newFeedValue" name="newFeedValue" type="url" class="form-control"
                            placeholder="search by title, URL or #topic" value=""/>
-                    <input type="submit" value="Add" class="topMargin btn btn-lg btn-primary" role="button"/>
+                    <input type="submit" value="Add" onclick="validateAndHideAddFeed();" class="topMargin btn btn-lg btn-primary" role="button"/>
                 </div>
             </form>
         </div>
@@ -72,8 +72,6 @@
                                             <div><span class="subText" th:text="${feedMessageView.publishDate}">Publish date</span></div>
                                         </td>
                                         <td class="paddingLeft">
-                                            <!--<a th:href="${feedMessageView.link}">to source</a>-->
-                                            <!--<a th:href="@{/fullMode(id=${feedMessageView.id})}">full mode</a>-->
                                             <a th:onclick="'javascript:openFullMode(\'' + ${feedMessageView.id} + '\');'" href="javascript:">full mode</a>
                                         </td>
                                     </tr>

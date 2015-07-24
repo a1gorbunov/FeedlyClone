@@ -18,9 +18,6 @@ import org.springframework.web.servlet.ModelAndView;
 public class FeedController {
     private static final Logger LOGGER = Logger.getLogger(FeedController.class.getSimpleName());
 
-    @Autowired
-    private FeedMessageService feedMessageService;
-
     private SyndFeedHolder feedHolder;
 
     @Autowired
