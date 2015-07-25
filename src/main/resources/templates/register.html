@@ -16,29 +16,16 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 
 <div class="container">
-    <form class="form-signin" th:action="@{/login}" method="post">
-        <div th:if="${param.error}" class="alert alert-danger">
-            Invalid username and password.
-        </div>
-        <div th:if="${param.logout}" class="alert alert-success">
-            You have been logged out.
-        </div>
-        <h2 class="form-signin-heading">Please sign in (test: user/password)</h2>
-        <label for="inputEmail" class="sr-only">User name</label>
-        <input id="inputEmail" name="username" class="form-control" required="required" autofocus="autofocus"/>
+
+    <form class="form-signin" th:action="@{/adduser}" method="post">
+        <div th:if="${invalid}" class="alert alert-warning" role="alert" th:text="${invalid}"></div>
+        <h3 class="form-signin-heading">Please, choose your name and password</h3>
+        <label for="inputUser" class="sr-only">User name</label>
+        <input id="inputUser" name="username" class="form-control" required="required" autofocus="autofocus"/>
         <label for="inputPassword" class="sr-only">Password</label>
         <input type="password" id="inputPassword" name="password" class="form-control" placeholder="Password" required="required"/>
-        <div class="checkbox">
-            <label>
-                <input type="checkbox" value="remember-me"/> Remember me
-            </label>
-        </div>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">Register</button>
     </form>
-
-    <div class="text-center">
-        <span>Not have account? <a th:href="@{/register}" href="#">Register Now</a></span>
-    </div>
 
 </div> <!-- /container -->
 

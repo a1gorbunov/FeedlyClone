@@ -1,7 +1,6 @@
 package com.feedlyclone.service.impl;
 
-import com.feedlyclone.dto.FeedMessageView;
-import com.feedlyclone.service.FeedMessageService;
+import com.feedlyclone.dto.FeedMessage;
 import com.feedlyclone.service.FeedWorkerService;
 import com.feedlyclone.util.SyndFeedHolder;
 import com.rometools.rome.feed.synd.SyndEntry;
@@ -11,7 +10,6 @@ import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import org.apache.log4j.Logger;
 import org.jsoup.Jsoup;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -63,29 +61,29 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
     }
 
     /**
-     * process syndFeed to List of FeedMessageView objects
+     * process syndFeed to List of FeedMessage objects
      * @param syndFeed feed data by ROME
-     * @return List of FeedMessageView
+     * @return List of FeedMessage
      */
-    private List<FeedMessageView> copySyndFeed(SyndFeed syndFeed) {
-        List<FeedMessageView> result = new ArrayList<>();
+    private List<FeedMessage> copySyndFeed(SyndFeed syndFeed) {
+        List<FeedMessage> result = new ArrayList<>();
         if (syndFeed != null && syndFeed.getEntries() != null && syndFeed.getEntries().size() > 0) {
             for (int i = 0; i < syndFeed.getEntries().size();i++){
                 SyndEntry syndEntry = syndFeed.getEntries().get(i);
-                FeedMessageView feedMessageView = new FeedMessageView();
-                feedMessageView.setId(i);
-                feedMessageView.setAuthor(syndEntry.getAuthor());
-                feedMessageView.setDescriptionClean(removeHtmlTag(syndEntry.getDescription().getValue()));
-                feedMessageView.setDescriptionFull(syndEntry.getDescription().getValue());
-                feedMessageView.setLink(syndEntry.getLink());
-                feedMessageView.setTitle(syndEntry.getTitle());
-                feedMessageView.setPublishDate(syndEntry.getPublishedDate());
+                FeedMessage feedMessage = new FeedMessage();
+                feedMessage.setId(i);
+                feedMessage.setAuthor(syndEntry.getAuthor());
+                feedMessage.setDescriptionClean(removeHtmlTag(syndEntry.getDescription().getValue()));
+                feedMessage.setDescriptionFull(syndEntry.getDescription().getValue());
+                feedMessage.setLink(syndEntry.getLink());
+                feedMessage.setTitle(syndEntry.getTitle());
+                feedMessage.setPublishDate(syndEntry.getPublishedDate());
                 if (!CollectionUtils.isEmpty(syndEntry.getEnclosures())) {
-                    feedMessageView.setImage(
+                    feedMessage.setImage(
                             syndEntry.getEnclosures().stream().filter(syndEnclosure -> syndEnclosure.getType().contains("image"))
                                     .findFirst().get().getUrl());
                 }
-                result.add(feedMessageView);
+                result.add(feedMessage);
             }
         }
 

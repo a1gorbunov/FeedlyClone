@@ -2,6 +2,7 @@ package com.feedlyclone.domain.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -13,11 +14,11 @@ import javax.persistence.Table;
 @Table(name = "account")
 public class Account extends AbstractModel {
 
+    @OneToOne(mappedBy = "account")
     private User user;
 
     private RssCategory rssCategory;
 
-    @OneToOne
     public User getUser() {
         return user;
     }

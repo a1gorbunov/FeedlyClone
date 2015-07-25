@@ -1,6 +1,6 @@
 package com.feedlyclone.util;
 
-import com.feedlyclone.dto.FeedMessageView;
+import com.feedlyclone.dto.FeedMessage;
 
 import java.util.Date;
 import java.util.List;
@@ -10,7 +10,7 @@ import java.util.List;
  */
 public class SyndFeedHolder {
 
-    private List<FeedMessageView> feedMessages;
+    private List<FeedMessage> feedMessages;
 
     private String description;
 
@@ -20,11 +20,11 @@ public class SyndFeedHolder {
 
     private Date publishedDate;
 
-    public SyndFeedHolder(List<FeedMessageView> feedMessages) {
+    public SyndFeedHolder(List<FeedMessage> feedMessages) {
         this.feedMessages = feedMessages;
     }
 
-    public SyndFeedHolder(List<FeedMessageView> feedMessages, String description, String titile, String link, Date publishDate) {
+    public SyndFeedHolder(List<FeedMessage> feedMessages, String description, String titile, String link, Date publishDate) {
         this.feedMessages = feedMessages;
         this.description = description;
         this.titile = titile;
@@ -32,11 +32,11 @@ public class SyndFeedHolder {
         this.publishedDate = publishDate;
     }
 
-    public List<FeedMessageView> getFeedMessages() {
+    public List<FeedMessage> getFeedMessages() {
         return feedMessages;
     }
 
-    public void setFeedMessages(List<FeedMessageView> feedMessages) {
+    public void setFeedMessages(List<FeedMessage> feedMessages) {
         this.feedMessages = feedMessages;
     }
 

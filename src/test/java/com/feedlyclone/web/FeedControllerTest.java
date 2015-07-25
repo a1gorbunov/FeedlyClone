@@ -1,8 +1,7 @@
 package com.feedlyclone.web;
 
 import com.feedlyclone.Application;
-import com.feedlyclone.domain.entity.FeedMessage;
-import com.feedlyclone.dto.FeedMessageView;
+import com.feedlyclone.dto.FeedMessage;
 import com.feedlyclone.service.FeedWorkerService;
 import com.feedlyclone.util.SyndFeedHolder;
 import org.junit.Before;
@@ -20,13 +19,9 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.util.CollectionUtils;
 
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
@@ -55,7 +50,7 @@ public class FeedControllerTest {
                 .build();
 
         final Date date = new Date();
-        FeedMessageView feedMessage = new FeedMessageView();
+        FeedMessage feedMessage = new FeedMessage();
         feedMessage.setTitle("test title");
         feedHolder = new SyndFeedHolder(Collections.singletonList(feedMessage), "description", "title", "link", date);
     }

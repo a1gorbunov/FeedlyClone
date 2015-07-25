@@ -9,7 +9,9 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <a id="logout" class="lead" th:href="@{/logout}">Logout</a>
+            <form th:action="@{/logout}" method="post">
+                <input type="submit" class="btn btn-default" value="Logout"/>
+            </form>
         </div>
     </div>
 

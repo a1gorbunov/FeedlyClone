@@ -9,7 +9,7 @@ import java.util.Date;
 /**
  * represent one dto rss message
  */
-public class FeedMessageView {
+public class FeedMessage {
 
     private Integer id;
 

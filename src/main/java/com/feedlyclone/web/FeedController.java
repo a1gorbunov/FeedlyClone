@@ -1,6 +1,5 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.service.FeedMessageService;
 import com.feedlyclone.service.FeedWorkerService;
 import com.feedlyclone.util.SyndFeedHolder;
 import org.apache.log4j.Logger;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class FeedController {

@@ -56,23 +56,23 @@
                 <div id="section_entries" class="col-sm-4" style="width: inherit;">
                     <div>
                         <ul class="list-group">
-                            <li class="list-group-item" th:each="feedMessageView : ${feedMessages}">
+                            <li class="list-group-item" th:each="feedMessage : ${feedMessages}">
                                 <table>
                                     <tr>
-                                        <td><img th:src="${feedMessageView.image}" src="../static/images/feedly-logo-black.png"/></td>
+                                        <td><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></td>
                                         <td class="paddingLeft">
-                                            <div><a th:href="${feedMessageView.link}" th:text="${feedMessageView.title}">Title</a>
+                                            <div><a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a>
                                             </div>
                                             <div class="contentPadding">
-                                        <span th:if="${#strings.length(feedMessageView.descriptionClean) gt 500}"
-                                              th:text="${#strings.substring(feedMessageView.descriptionClean,0, 500)}">Description</span>
-                                        <span th:if="${#strings.length(feedMessageView.descriptionClean) le 500}"
-                                              th:text="${feedMessageView.descriptionClean}">Description</span>
+                                        <span th:if="${#strings.length(feedMessage.descriptionClean) gt 500}"
+                                              th:text="${#strings.substring(feedMessage.descriptionClean,0, 500)}">Description</span>
+                                        <span th:if="${#strings.length(feedMessage.descriptionClean) le 500}"
+                                              th:text="${feedMessage.descriptionClean}">Description</span>
                                             </div>
-                                            <div><span class="subText" th:text="${feedMessageView.publishDate}">Publish date</span></div>
+                                            <div><span class="subText" th:text="${feedMessage.publishDate}">Publish date</span></div>
                                         </td>
                                         <td class="paddingLeft">
-                                            <a th:onclick="'javascript:openFullMode(\'' + ${feedMessageView.id} + '\');'" href="javascript:">full mode</a>
+                                            <a th:onclick="'javascript:openFullMode(\'' + ${feedMessage.id} + '\');'" href="javascript:">full mode</a>
                                         </td>
                                     </tr>
                                 </table>
