@@ -1,14 +1,11 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.domain.UserRepository;
-import com.feedlyclone.domain.entity.User;
+import com.feedlyclone.service.FeedSecurityService;
 import com.feedlyclone.service.UserService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
-import org.springframework.util.StreamUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -24,14 +21,14 @@ public class LoginController {
     @Autowired
     private UserService userService;
 
+    @Autowired
+    private FeedSecurityService feedSecurityService;
+
     @RequestMapping(value = "/username", method = RequestMethod.GET)
     public
     @ResponseBody
     String printWelcome(Principal principal) {
-        if (principal != null) {
-            return principal.getName();
-        }
-        return null;
+        return feedSecurityService.getCurrentUserName();
     }
 
     @RequestMapping(value = "/adduser", method = RequestMethod.POST)

@@ -1,9 +1,5 @@
 package com.feedlyclone.dto;
 
-import com.feedlyclone.domain.entity.AbstractModel;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
 import java.util.Date;
 
 /**

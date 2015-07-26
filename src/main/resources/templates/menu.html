@@ -34,54 +34,20 @@
         </div>
     </div>
 
-    <div class="bs-example">
-        <div class="panel-group" id="accordion">
-            <div class="panel panel-default">
+    <div class="bs-example" th:if="${not #lists.isEmpty(categories)}">
+        <div class="panel-group" id="accordion" >
+            <div class="panel panel-default" th:each="cat : ${categories}">
                 <div class="panel-heading">
                     <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne">Category 1</a>
+                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" th:text="${cat.title}"></a>
                     </h4>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in">
+                <div id="collapseOne" class="panel-collapse collapse in" th:each="urls : ${cat.feedUrls}">
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item">
-                                <span class="badge">14</span>
+                            <li class="list-group-item" th:text="${urls}">
+                                <span class="badge" >14</span>
                                 feed 1
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseTwo">Category 2</a>
-                    </h4>
-                </div>
-                <div id="collapseTwo" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <span class="badge">14</span>
-                                feed 2
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="panel-title">
-                        <a data-toggle="collapse" data-parent="#accordion" href="#collapseThree">Category 3</a>
-                    </h4>
-                </div>
-                <div id="collapseThree" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <ul class="list-group">
-                            <li class="list-group-item">
-                                <span class="badge">14</span>
-                                feed 3
                             </li>
                         </ul>
                     </div>

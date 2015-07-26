@@ -1,12 +1,9 @@
 package com.feedlyclone.service;
 
-import com.feedlyclone.Application;
+import com.feedlyclone.BaseSpringTest;
 import com.feedlyclone.util.SyndFeedHolder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import java.net.URL;
 import java.util.Calendar;
@@ -15,9 +12,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-public class FeedWorkerServiceTest {
+public class FeedWorkerServiceTest extends BaseSpringTest{
 
     @Autowired
     private FeedWorkerService feedWorkerService;

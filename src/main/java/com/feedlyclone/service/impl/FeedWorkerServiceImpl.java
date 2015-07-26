@@ -1,5 +1,7 @@
 package com.feedlyclone.service.impl;
 
+import com.feedlyclone.domain.entity.RssCategory;
+import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.dto.FeedMessage;
 import com.feedlyclone.service.FeedWorkerService;
 import com.feedlyclone.util.SyndFeedHolder;
@@ -88,6 +90,36 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
         }
 
         return result;
+    }
+
+    @Override
+    public SyndFeedHolder readFeedForCategory(RssCategory category) {
+        if (category != null && !CollectionUtils.isEmpty(category.getFeedUrls())){
+            SyndFeedHolder commonFeedHolder = new SyndFeedHolder();
+            category.getFeedUrls().stream().forEach(url -> {
+                SyndFeedHolder syndFeedHolder = readFeedFromUrl(url);
+                if (syndFeedHolder != null && !CollectionUtils.isEmpty(syndFeedHolder.getFeedMessages())) {
+                    commonFeedHolder.addFeedMessages(syndFeedHolder.getFeedMessages());
+                }
+            });
+            return commonFeedHolder;
+        }
+        return null;
+    }
+
+     @Override
+    public List<SyndFeedHolder> getAggregateFeedForUser(User user) {
+        if (user != null && user.getAccount() != null && CollectionUtils.isEmpty(user.getAccount().getRssCategory())){
+            List<SyndFeedHolder> result = new ArrayList<>();
+            user.getAccount().getRssCategory().stream().forEach(rssCategory -> {
+                SyndFeedHolder categoryFeed = readFeedForCategory(rssCategory);
+                if (categoryFeed != null){
+                    result.add(categoryFeed);
+                }
+            });
+            return result;
+        }
+        return null;
     }
 
     private String removeHtmlTag(String content){

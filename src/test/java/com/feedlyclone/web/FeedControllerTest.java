@@ -27,11 +27,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = Application.class)
-@ContextConfiguration(classes = MockServletContext.class)
-@WebAppConfiguration
-public class FeedControllerTest {
+public class FeedControllerTest extends BaseWebSpringTest{
 
     @InjectMocks
     private FeedController feedController;

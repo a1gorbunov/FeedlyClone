@@ -5,10 +5,9 @@ import com.feedlyclone.domain.entity.Account;
 import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.validation.ConstraintViolationException;
 
 @Service
 @Transactional
@@ -18,7 +17,7 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     @Override
-    public void save(User user){
+    public void save(User user) throws DataIntegrityViolationException {
         userRepository.save(user);
     }
 
@@ -28,7 +27,7 @@ public class UserServiceImpl implements UserService{
     }
 
     @Override
-    public void addEmptyUser(String username, String password) {
+    public void addEmptyUser(String username, String password) throws DataIntegrityViolationException{
         User user = new User();
         user.setName(username);
         user.setPassword(password);
