@@ -5,7 +5,7 @@ import java.util.Date;
 /**
  * represent one dto rss message
  */
-public class FeedMessage {
+public class FeedMessageDTO {
 
     private Integer id;
 

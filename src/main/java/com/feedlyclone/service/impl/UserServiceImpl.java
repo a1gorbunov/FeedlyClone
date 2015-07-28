@@ -1,29 +1,41 @@
 package com.feedlyclone.service.impl;
 
-import com.feedlyclone.domain.UserRepository;
 import com.feedlyclone.domain.entity.Account;
 import com.feedlyclone.domain.entity.User;
+import com.feedlyclone.domain.repository.UserRepository;
+import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
-@Transactional
 public class UserServiceImpl implements UserService{
 
     @Autowired
     private UserRepository userRepository;
 
     @Override
-    public void save(User user) throws DataIntegrityViolationException {
-        userRepository.save(user);
+    public UserDTO save(UserDTO userDTO) throws DataIntegrityViolationException {
+        if (userDTO != null){
+            User user = new User();
+            BeanUtils.copyProperties(userDTO, user);
+            user = userRepository.save(user);
+            userDTO.setId(user.getId());
+        }
+        return userDTO;
     }
 
     @Override
-    public User getUser(String name) {
-        return userRepository.findByName(name);
+    public UserDTO getUser(String name) {
+        User user = userRepository.findByName(name);
+        UserDTO userDTO = null;
+        if (user != null){
+            userDTO = new UserDTO();
+            BeanUtils.copyProperties(user, userDTO);
+        }
+        return userDTO;
     }
 
     @Override
@@ -34,6 +46,6 @@ public class UserServiceImpl implements UserService{
         Account account = new Account();
         account.setUser(user);
         user.setAccount(account);
-        save(user);
+        userRepository.save(user);
     }
 }

@@ -1,20 +1,13 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.Application;
-import com.feedlyclone.dto.FeedMessage;
+import com.feedlyclone.dto.FeedMessageDTO;
+import com.feedlyclone.dto.SyndFeedDTO;
 import com.feedlyclone.service.FeedWorkerService;
-import com.feedlyclone.util.SyndFeedHolder;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.mock.web.MockServletContext;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -37,7 +30,7 @@ public class FeedControllerTest extends BaseWebSpringTest{
 
     private MockMvc mvc;
 
-    private SyndFeedHolder feedHolder;
+    private SyndFeedDTO feedHolder;
 
     @Before
     public void setUp(){
@@ -46,9 +39,9 @@ public class FeedControllerTest extends BaseWebSpringTest{
                 .build();
 
         final Date date = new Date();
-        FeedMessage feedMessage = new FeedMessage();
+        FeedMessageDTO feedMessage = new FeedMessageDTO();
         feedMessage.setTitle("test title");
-        feedHolder = new SyndFeedHolder(Collections.singletonList(feedMessage), "description", "title", "link", date);
+        feedHolder = new SyndFeedDTO(Collections.singletonList(feedMessage), "description", "title", "link", date);
     }
 
     @Test

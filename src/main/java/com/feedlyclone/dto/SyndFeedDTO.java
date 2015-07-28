@@ -1,36 +1,33 @@
-package com.feedlyclone.util;
-
-import com.feedlyclone.dto.FeedMessage;
+package com.feedlyclone.dto;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
 /**
- * used as wrapper for hold full feed info
+ * provide complete information from feed url
  */
 
-public class SyndFeedHolder {
+public class SyndFeedDTO {
 
-    private List<FeedMessage> feedMessages;
-    @Deprecated
+    private List<FeedMessageDTO> feedMessages;
+
     private String description;
-    @Deprecated
+
     private String titile;
-    @Deprecated
+
     private String link;
-    @Deprecated
+
     private Date publishedDate;
 
-    public SyndFeedHolder() {
+    public SyndFeedDTO() {
     }
 
-    public SyndFeedHolder(List<FeedMessage> feedMessages) {
+    public SyndFeedDTO(List<FeedMessageDTO> feedMessages) {
         this.feedMessages = feedMessages;
     }
-    @Deprecated
-    public SyndFeedHolder(List<FeedMessage> feedMessages, String description, String titile, String link, Date publishDate) {
+
+    public SyndFeedDTO(List<FeedMessageDTO> feedMessages, String description, String titile, String link, Date publishDate) {
         this.feedMessages = feedMessages;
         this.description = description;
         this.titile = titile;
@@ -38,47 +35,47 @@ public class SyndFeedHolder {
         this.publishedDate = publishDate;
     }
 
-    public List<FeedMessage> getFeedMessages() {
+    public List<FeedMessageDTO> getFeedMessages() {
         return feedMessages;
     }
 
-    public void setFeedMessages(List<FeedMessage> feedMessages) {
+    public void setFeedMessages(List<FeedMessageDTO> feedMessages) {
         this.feedMessages = feedMessages;
     }
-    @Deprecated
+
     public String getDescription() {
         return description;
     }
-    @Deprecated
+
     public void setDescription(String description) {
         this.description = description;
     }
-    @Deprecated
+
     public String getTitle() {
         return titile;
     }
-    @Deprecated
+
     public void setTitle(String titile) {
         this.titile = titile;
     }
-    @Deprecated
+
     public String getLink() {
         return link;
     }
-    @Deprecated
+
     public void setLink(String link) {
         this.link = link;
     }
-    @Deprecated
+
     public Date getPublishedDate() {
         return publishedDate;
     }
-    @Deprecated
+
     public void setPublishedDate(Date publishedDate) {
         this.publishedDate = publishedDate;
     }
 
-    public void addFeedMessages(List<FeedMessage> feedMessages){
+    public void addFeedMessages(List<FeedMessageDTO> feedMessages){
         if (feedMessages == null){
             feedMessages = new ArrayList<>();
         }

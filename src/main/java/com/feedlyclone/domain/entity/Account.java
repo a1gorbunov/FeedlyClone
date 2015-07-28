@@ -2,10 +2,10 @@ package com.feedlyclone.domain.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import java.util.List;
@@ -20,11 +20,11 @@ public class Account extends AbstractModel {
     @OneToOne(mappedBy = "account")
     private User user;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     @JoinTable(joinColumns = {
             @JoinColumn(name = "rss_category_id") },
                inverseJoinColumns = { @JoinColumn(name = "account_id")})
-    private List<RssCategory> rssCategory;
+    private List<RssCategory> rssCategories;
 
     public User getUser() {
         return user;
@@ -34,11 +34,11 @@ public class Account extends AbstractModel {
         this.user = user;
     }
 
-    public List<RssCategory> getRssCategory() {
-        return rssCategory;
+    public List<RssCategory> getRssCategories() {
+        return rssCategories;
     }
 
-    public void setRssCategory(List<RssCategory> rssCategory) {
-        this.rssCategory = rssCategory;
+    public void setRssCategories(List<RssCategory> rssCategories) {
+        this.rssCategories = rssCategories;
     }
 }

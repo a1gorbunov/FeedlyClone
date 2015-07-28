@@ -1,8 +1,7 @@
 package com.feedlyclone.service;
 
-import com.feedlyclone.domain.entity.User;
+import com.feedlyclone.dto.UserDTO;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.stereotype.Service;
 
 /**
  *  operations with user
@@ -10,9 +9,9 @@ import org.springframework.stereotype.Service;
 
 public interface UserService {
 
-    void save(User user) throws DataIntegrityViolationException;
+    UserDTO save(UserDTO user) throws DataIntegrityViolationException;
 
-    User getUser(String name);
+    UserDTO getUser(String name);
 
     void addEmptyUser(String name, String password) throws DataIntegrityViolationException;
 }

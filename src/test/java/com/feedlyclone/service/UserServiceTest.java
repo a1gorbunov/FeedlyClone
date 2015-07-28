@@ -1,10 +1,10 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.BaseSpringTest;
-import com.feedlyclone.domain.AccountRepository;
-import com.feedlyclone.domain.UserRepository;
 import com.feedlyclone.domain.entity.User;
-import org.junit.After;
+import com.feedlyclone.domain.repository.AccountRepository;
+import com.feedlyclone.domain.repository.UserRepository;
+import com.feedlyclone.dto.UserDTO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,12 +22,6 @@ public class UserServiceTest extends BaseSpringTest{
 
     @Autowired
     private AccountRepository accountRepository;
-
-    @After
-    public void clearAll(){
-        userRepository.deleteAll();
-        accountRepository.deleteAll();
-    }
 
     @Test
     public void addEmptyUser(){
@@ -48,11 +42,11 @@ public class UserServiceTest extends BaseSpringTest{
     public void saveDuplicate(){
         String userName = "testuser";
 
-        User user = new User();
+        UserDTO user = new UserDTO();
         user.setName(userName);
         userService.save(user);
 
-        user = new User();
+        user = new UserDTO();
         user.setName(userName);
         userService.save(user);
     }

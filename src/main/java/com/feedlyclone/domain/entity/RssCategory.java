@@ -3,7 +3,6 @@ package com.feedlyclone.domain.entity;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.ManyToMany;
-import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,8 +16,8 @@ public class RssCategory extends AbstractModel {
 
     private String title;
 
-    @ManyToMany(mappedBy = "rssCategory")
-    private List<Account> account;
+    @ManyToMany(mappedBy = "rssCategories")
+    private List<Account> accounts;
 
     @ElementCollection
     private List<String> feedUrls = new ArrayList<>();
@@ -31,12 +30,12 @@ public class RssCategory extends AbstractModel {
         this.title = title;
     }
 
-    public List<Account> getAccount() {
-        return account;
+    public List<Account> getAccounts() {
+        return accounts;
     }
 
-    public void setAccount(List<Account> account) {
-        this.account = account;
+    public void setAccounts(List<Account> accounts) {
+        this.accounts = accounts;
     }
 
     public List<String> getFeedUrls() {

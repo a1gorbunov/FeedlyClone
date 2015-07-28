@@ -90,6 +90,7 @@ body{
 
 .floatingEntryContent-tab.tab_0 {
     background-image: url(../images/tab-first.png );
+    top:-4px;
 }
 
 .floatingEntryContent-tab.tab_0 div {

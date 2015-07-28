@@ -1,7 +1,7 @@
 package com.feedlyclone.service.impl;
 
-import com.feedlyclone.domain.UserRepository;
 import com.feedlyclone.domain.entity.User;
+import com.feedlyclone.domain.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;

@@ -2,16 +2,16 @@ package com.feedlyclone.service.impl;
 
 import com.feedlyclone.domain.entity.RssCategory;
 import com.feedlyclone.domain.entity.User;
-import com.feedlyclone.dto.FeedMessage;
+import com.feedlyclone.dto.RssCategoryDTO;
+import com.feedlyclone.dto.SyndFeedDTO;
+import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.service.FeedWorkerService;
-import com.feedlyclone.util.SyndFeedHolder;
-import com.rometools.rome.feed.synd.SyndEntry;
+import com.feedlyclone.util.CommonFeedUtil;
 import com.rometools.rome.feed.synd.SyndFeed;
 import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import org.apache.log4j.Logger;
-import org.jsoup.Jsoup;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
@@ -26,7 +26,7 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
     private static final Logger LOGGER = Logger.getLogger(FeedWorkerServiceImpl.class.getSimpleName());
 
     @Override
-    public SyndFeedHolder readFeedFromUrl(String url) {
+    public SyndFeedDTO readFeedFromUrl(String url) {
         if (url == null || url.isEmpty()) {
             LOGGER.debug("empty url");
             return null;
@@ -50,7 +50,7 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
         }
 
         if (feed != null){
-            SyndFeedHolder feedHolder = new SyndFeedHolder(copySyndFeed(feed));
+            SyndFeedDTO feedHolder = new SyndFeedDTO(CommonFeedUtil.copySyndFeed(feed));
             feedHolder.setLink(feed.getLink());
             feedHolder.setDescription(feed.getDescription());
             feedHolder.setPublishedDate(feed.getPublishedDate());
@@ -62,44 +62,14 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
         return null;
     }
 
-    /**
-     * process syndFeed to List of FeedMessage objects
-     * @param syndFeed feed data by ROME
-     * @return List of FeedMessage
-     */
-    private List<FeedMessage> copySyndFeed(SyndFeed syndFeed) {
-        List<FeedMessage> result = new ArrayList<>();
-        if (syndFeed != null && syndFeed.getEntries() != null && syndFeed.getEntries().size() > 0) {
-            for (int i = 0; i < syndFeed.getEntries().size();i++){
-                SyndEntry syndEntry = syndFeed.getEntries().get(i);
-                FeedMessage feedMessage = new FeedMessage();
-                feedMessage.setId(i);
-                feedMessage.setAuthor(syndEntry.getAuthor());
-                feedMessage.setDescriptionClean(removeHtmlTag(syndEntry.getDescription().getValue()));
-                feedMessage.setDescriptionFull(syndEntry.getDescription().getValue());
-                feedMessage.setLink(syndEntry.getLink());
-                feedMessage.setTitle(syndEntry.getTitle());
-                feedMessage.setPublishDate(syndEntry.getPublishedDate());
-                if (!CollectionUtils.isEmpty(syndEntry.getEnclosures())) {
-                    feedMessage.setImage(
-                            syndEntry.getEnclosures().stream().filter(syndEnclosure -> syndEnclosure.getType().contains("image"))
-                                    .findFirst().get().getUrl());
-                }
-                result.add(feedMessage);
-            }
-        }
-
-        return result;
-    }
-
     @Override
-    public SyndFeedHolder readFeedForCategory(RssCategory category) {
+    public SyndFeedDTO readFeedForCategory(RssCategoryDTO category) {
         if (category != null && !CollectionUtils.isEmpty(category.getFeedUrls())){
-            SyndFeedHolder commonFeedHolder = new SyndFeedHolder();
+            SyndFeedDTO commonFeedHolder = new SyndFeedDTO();
             category.getFeedUrls().stream().forEach(url -> {
-                SyndFeedHolder syndFeedHolder = readFeedFromUrl(url);
-                if (syndFeedHolder != null && !CollectionUtils.isEmpty(syndFeedHolder.getFeedMessages())) {
-                    commonFeedHolder.addFeedMessages(syndFeedHolder.getFeedMessages());
+                SyndFeedDTO syndFeedDTO = readFeedFromUrl(url);
+                if (syndFeedDTO != null && !CollectionUtils.isEmpty(syndFeedDTO.getFeedMessages())) {
+                    commonFeedHolder.addFeedMessages(syndFeedDTO.getFeedMessages());
                 }
             });
             return commonFeedHolder;
@@ -108,11 +78,11 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
     }
 
      @Override
-    public List<SyndFeedHolder> getAggregateFeedForUser(User user) {
-        if (user != null && user.getAccount() != null && CollectionUtils.isEmpty(user.getAccount().getRssCategory())){
-            List<SyndFeedHolder> result = new ArrayList<>();
-            user.getAccount().getRssCategory().stream().forEach(rssCategory -> {
-                SyndFeedHolder categoryFeed = readFeedForCategory(rssCategory);
+    public List<SyndFeedDTO> getAggregateFeedForUser(UserDTO user) {
+        if (user != null && user.getAccount() != null && CollectionUtils.isEmpty(user.getAccount().getRssCategories())){
+            List<SyndFeedDTO> result = new ArrayList<>();
+            user.getAccount().getRssCategories().stream().forEach(rssCategory -> {
+                SyndFeedDTO categoryFeed = readFeedForCategory(rssCategory);
                 if (categoryFeed != null){
                     result.add(categoryFeed);
                 }
@@ -120,9 +90,5 @@ public class FeedWorkerServiceImpl implements FeedWorkerService {
             return result;
         }
         return null;
-    }
-
-    private String removeHtmlTag(String content){
-        return Jsoup.parseBodyFragment(content).body().text();
     }
 }

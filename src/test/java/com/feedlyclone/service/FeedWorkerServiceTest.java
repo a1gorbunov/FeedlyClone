@@ -1,7 +1,7 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.BaseSpringTest;
-import com.feedlyclone.util.SyndFeedHolder;
+import com.feedlyclone.dto.SyndFeedDTO;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -22,7 +22,7 @@ public class FeedWorkerServiceTest extends BaseSpringTest{
         URL resourceFile = getClass().getClassLoader().getResource("files/feed.xml");
         assertNotNull(resourceFile);
 
-        SyndFeedHolder feedHolder = feedWorkerService.readFeedFromUrl("file://" + resourceFile.getPath());
+        SyndFeedDTO feedHolder = feedWorkerService.readFeedFromUrl("file://" + resourceFile.getPath());
         assertNotNull(feedHolder);
         assertNotNull(feedHolder.getFeedMessages());
         assertFalse(feedHolder.getFeedMessages().isEmpty());
@@ -39,9 +39,9 @@ public class FeedWorkerServiceTest extends BaseSpringTest{
             calendar.setTimeInMillis(1437637260000L);
             assertEquals(calendar.getTime(), feedMessage.getPublishDate());
         });
-        assertEquals("TUT.BY: Новости ТУТ - Экономика и бизнес", feedHolder.getTitle());
+        assertEquals("test title", feedHolder.getTitle());
         assertEquals("http://news.tut.by/", feedHolder.getLink());
-        assertEquals("TUT.BY: Новости ТУТ - Экономика и бизнес", feedHolder.getDescription());
+        assertEquals("test description", feedHolder.getDescription());
         assertEquals(1437638916000L, feedHolder.getPublishedDate().getTime());
     }
 }

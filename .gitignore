@@ -55,3 +55,8 @@ $RECYCLE.BIN/
 build
 out
 *.iml
+
+#############
+## Database
+#############
+*.db

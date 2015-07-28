@@ -1,8 +1,10 @@
 package com.feedlyclone.service.impl;
 
 import com.feedlyclone.domain.entity.User;
+import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.service.FeedSecurityService;
 import com.feedlyclone.service.UserService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -18,11 +20,11 @@ public class FeedSecurityServiceImpl implements FeedSecurityService {
     @Override
     public String getCurrentUserName() {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        return auth.getName(); //get logged in username
+        return auth.getName();
     }
 
     @Override
-    public User getCurrentUser() {
+    public UserDTO getCurrentUser() {
         org.springframework.security.core.userdetails.User user =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         if (user != null && StringUtils.isEmpty(user.getUsername())){
