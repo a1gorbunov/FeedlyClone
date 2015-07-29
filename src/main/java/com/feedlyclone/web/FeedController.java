@@ -4,6 +4,8 @@ import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import com.feedlyclone.dto.SyndFeedDTO;
 import com.feedlyclone.dto.UserDTO;
+import com.feedlyclone.exceptions.FeedServiceException;
+import com.feedlyclone.exceptions.NotFoundException;
 import com.feedlyclone.service.AccountService;
 import com.feedlyclone.service.FeedSecurityService;
 import com.feedlyclone.service.FeedWorkerService;
@@ -32,9 +34,6 @@ public class FeedController {
     private FeedWorkerService feedWorkerService;
 
     @Autowired
-    private RssCategoryService categoryService;
-
-    @Autowired
     private AccountService accountService;
 
     @Autowired
@@ -46,13 +45,29 @@ public class FeedController {
     @RequestMapping(value = "/addFeed")
     public String addFeed(@RequestParam("newFeedValue") String newFeedUrl, Model model){
         LOGGER.debug("add new feed: " + newFeedUrl);
-        feedHolder = feedWorkerService.readFeedFromUrl(newFeedUrl);
+        try {
+            feedHolder = feedWorkerService.readFeedFromUrl(newFeedUrl);
+        } catch (FeedServiceException e) {
+            LOGGER.error(e);
+            return "home";
+        }
         if(feedHolder != null ) {
-            UserDTO user = feedSecurityService.getCurrentUser();
+            UserDTO user;
+            try {
+                user = feedSecurityService.getCurrentUser();
+            } catch (NotFoundException e) {
+                LOGGER.debug(e);
+                return "login";
+            }
             String feedTitle = feedHolder.getTitle();
             if (user != null && user.getAccount() != null && !StringUtils.isEmpty(feedTitle)) {
                 AccountDTO account = user.getAccount();
-                accountService.addFeedToAccount(account.getId(), feedTitle, newFeedUrl);
+                try {
+                    accountService.addFeedToAccount(account.getId(), feedTitle, newFeedUrl);
+                } catch (NotFoundException e) {
+                    model.addAttribute("invalidate", "current account not found");
+                    return "login";
+                }
 
                 model.addAttribute("feedMessages", feedHolder.getFeedMessages());
                 model.addAttribute("categoryName", feedTitle);
@@ -80,7 +95,13 @@ public class FeedController {
      */
     @RequestMapping(value = "/home")
     public String home(ModelMap modelMap){
-        UserDTO user = feedSecurityService.getCurrentUser();
+        UserDTO user;
+        try {
+            user = feedSecurityService.getCurrentUser();
+        } catch (NotFoundException e) {
+            LOGGER.debug(e);
+            return "login";
+        }
         if (user != null && StringUtils.isEmpty(user.getName())) {
             modelMap.addAttribute("username", user.getName());
             List<RssCategoryDTO> categories = user.getAccount().getRssCategories();

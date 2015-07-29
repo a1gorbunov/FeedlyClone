@@ -1,14 +1,30 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.dto.UserDTO;
+import com.feedlyclone.exceptions.NotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
-/**
- *  provide access to security information (current session user and etc.)
- */
+@Service
+public class FeedSecurityService {
 
-public interface FeedSecurityService {
+    @Autowired
+    private UserService userService;
 
-    String getCurrentUserName();
+    public String getCurrentUserName() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return auth.getName();
+    }
 
-    UserDTO getCurrentUser();
+    public UserDTO getCurrentUser() throws NotFoundException {
+        org.springframework.security.core.userdetails.User user =
+                (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (user != null && StringUtils.isEmpty(user.getUsername())){
+            return userService.getUser(user.getUsername());
+        }
+        return  null;
+    }
 }

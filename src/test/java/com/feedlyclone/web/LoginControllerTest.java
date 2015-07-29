@@ -1,6 +1,5 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.service.UserService;
 import org.junit.Before;

@@ -2,7 +2,6 @@ package com.feedlyclone.domain.entity;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
@@ -20,7 +19,7 @@ public class Account extends AbstractModel {
     @OneToOne(mappedBy = "account")
     private User user;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    @ManyToMany(cascade = CascadeType.PERSIST)
     @JoinTable(joinColumns = {
             @JoinColumn(name = "rss_category_id") },
                inverseJoinColumns = { @JoinColumn(name = "account_id")})

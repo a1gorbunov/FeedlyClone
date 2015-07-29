@@ -4,18 +4,16 @@ import com.feedlyclone.domain.entity.Account;
 import com.feedlyclone.domain.entity.RssCategory;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
-import ma.glasnost.orika.CustomMapper;
-import ma.glasnost.orika.MappingContext;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
 @Component
-public class RssCategoryMapper extends CustomMapper<RssCategory, RssCategoryDTO> {
+public class RssCategoryMapper implements FeedCustomMapper<RssCategory, RssCategoryDTO> {
 
     @Override
-    public void mapAtoB(RssCategory category, RssCategoryDTO categoryDTO, MappingContext context) {
+    public void mapAtoB(RssCategory category, RssCategoryDTO categoryDTO) {
         if (category != null && categoryDTO != null){
             categoryDTO.setId(category.getId());
             categoryDTO.setTitle(category.getTitle());
@@ -35,7 +33,7 @@ public class RssCategoryMapper extends CustomMapper<RssCategory, RssCategoryDTO>
     }
 
     @Override
-    public void mapBtoA(RssCategoryDTO categoryDTO, RssCategory category, MappingContext context) {
+    public void mapBtoA(RssCategoryDTO categoryDTO, RssCategory category) {
         if (category != null && categoryDTO != null){
             category.setId(categoryDTO.getId());
             category.setTitle(categoryDTO.getTitle());
@@ -52,5 +50,19 @@ public class RssCategoryMapper extends CustomMapper<RssCategory, RssCategoryDTO>
                 category.setFeedUrls(categoryDTO.getFeedUrls().stream().filter(s -> true).collect(Collectors.toList()));
             }
         }
+    }
+
+    @Override
+    public RssCategoryDTO map(RssCategory category) {
+        RssCategoryDTO categoryDTO = new RssCategoryDTO();
+        mapAtoB(category, categoryDTO);
+        return categoryDTO;
+    }
+
+    @Override
+    public RssCategory mapReverse(RssCategoryDTO categoryDTO) {
+        RssCategory category = new RssCategory();
+        mapBtoA(categoryDTO, category);
+        return category;
     }
 }

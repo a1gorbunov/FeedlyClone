@@ -1,4 +1,4 @@
-package com.feedlyclone.service.impl;
+package com.feedlyclone.service;
 
 import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.domain.repository.UserRepository;

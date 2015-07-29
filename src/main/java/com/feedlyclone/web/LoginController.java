@@ -1,5 +1,7 @@
 package com.feedlyclone.web;
 
+import com.feedlyclone.dto.UserDTO;
+import com.feedlyclone.exceptions.NotFoundException;
 import com.feedlyclone.service.FeedSecurityService;
 import com.feedlyclone.service.UserService;
 import org.apache.log4j.Logger;
@@ -35,13 +37,20 @@ public class LoginController {
     public String addUser(@RequestParam String username, @RequestParam String password, ModelMap modelMap){
         LOGGER.debug("trying to add new user");
         if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)){
-            if (userService.getUser(username) != null){
+            UserDTO user;
+            try {
+                user = userService.getUser(username);
+            } catch (NotFoundException e) {
+                user = null;
+            }
+            if (user != null){
                 modelMap.addAttribute("invalid", "this username already exist");
             } else {
                 userService.addEmptyUser(username, password);
                 LOGGER.debug(String.format("new user with name={%s} stored succesfully", username));
                 return "login";
             }
+
         }
         return "register";
     }

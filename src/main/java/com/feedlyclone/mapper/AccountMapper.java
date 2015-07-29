@@ -6,19 +6,16 @@ import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import com.feedlyclone.dto.UserDTO;
-import ma.glasnost.orika.CustomMapper;
-import ma.glasnost.orika.MappingContext;
-import org.springframework.core.convert.converter.Converter;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Component
-public class AccountMapper extends CustomMapper<Account, AccountDTO> {
+public class AccountMapper implements FeedCustomMapper<Account, AccountDTO> {
 
     @Override
-    public void mapAtoB(Account account, AccountDTO accountDTO, MappingContext context) {
+    public void mapAtoB(Account account, AccountDTO accountDTO) {
         if (account != null && accountDTO != null){
             accountDTO.setId(account.getId());
             if (account.getUser() != null) {
@@ -44,7 +41,7 @@ public class AccountMapper extends CustomMapper<Account, AccountDTO> {
     }
 
     @Override
-    public void mapBtoA(AccountDTO accountDTO, Account account, MappingContext context) {
+    public void mapBtoA(AccountDTO accountDTO, Account account) {
         if (account != null && accountDTO != null){
             account.setId(accountDTO.getId());
             if (accountDTO.getUser() != null) {
@@ -67,5 +64,19 @@ public class AccountMapper extends CustomMapper<Account, AccountDTO> {
                 account.setRssCategories(categories);
             }
         }
+    }
+
+    @Override
+    public AccountDTO map(Account account) {
+        AccountDTO accountDTO = new AccountDTO();
+        mapAtoB(account, accountDTO);
+        return accountDTO;
+    }
+
+    @Override
+    public Account mapReverse(AccountDTO accountDTO) {
+        Account account = new Account();
+        mapBtoA(accountDTO, account);
+        return account;
     }
 }

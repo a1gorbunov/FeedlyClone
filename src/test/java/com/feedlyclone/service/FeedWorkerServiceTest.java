@@ -2,6 +2,7 @@ package com.feedlyclone.service;
 
 import com.feedlyclone.BaseSpringTest;
 import com.feedlyclone.dto.SyndFeedDTO;
+import com.feedlyclone.exceptions.FeedServiceException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -18,7 +19,7 @@ public class FeedWorkerServiceTest extends BaseSpringTest{
     private FeedWorkerService feedWorkerService;
 
     @Test
-    public void readFeedFromUrlTest(){
+    public void readFeedFromUrlTest() throws FeedServiceException {
         URL resourceFile = getClass().getClassLoader().getResource("files/feed.xml");
         assertNotNull(resourceFile);
 

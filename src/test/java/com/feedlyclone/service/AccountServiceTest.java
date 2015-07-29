@@ -3,7 +3,10 @@ package com.feedlyclone.service;
 import com.feedlyclone.BaseSpringTest;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
+import com.feedlyclone.exceptions.NotFoundException;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import static org.junit.Assert.assertEquals;
@@ -18,8 +21,11 @@ public class AccountServiceTest extends BaseSpringTest {
     @Autowired
     private RssCategoryService rssCategoryService;
 
+    @Rule
+    public ExpectedException thrown= ExpectedException.none();
+
     @Test
-    public void addFeedToAccount(){
+    public void addFeedToAccount() throws NotFoundException {
         String testUrl = "test url";
         String testTitle = "test title";
         String testUrl2 = "test url 2";
@@ -72,5 +78,9 @@ public class AccountServiceTest extends BaseSpringTest {
         assertEquals(2, category.getFeedUrls().size());
         assertTrue(category.getFeedUrls().contains(testUrl3));
         assertEquals(testTitle2, category.getTitle());
+
+        // test unknown account
+        thrown.expect(NotFoundException.class);
+        accountService.addFeedToAccount(100L, testTitle2, testUrl2);
     }
 }

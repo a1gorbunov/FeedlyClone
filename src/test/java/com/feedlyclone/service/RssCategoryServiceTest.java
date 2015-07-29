@@ -20,22 +20,15 @@ public class RssCategoryServiceTest extends BaseSpringTest {
     @Autowired
     private AccountService accountService;
 
-    @Autowired
-    private RssCategoryRepository categoryRepository;
-
     @Test
     public void getCategoryForAccountByTitle(){
         String title = "test title";
         RssCategoryDTO category = new RssCategoryDTO();
         category.setTitle(title);
-        category = categoryService.save(category);
 
         AccountDTO account = new AccountDTO();
         account.setRssCategories(Arrays.asList(category));
         account = accountService.save(account);
-
-        category.setAccounts(Arrays.asList(account));
-        categoryService.save(category);
 
         RssCategoryDTO storedCategory = categoryService.getCategoryForAccountByTitle(title, account.getId());
         assertNotNull(storedCategory);
