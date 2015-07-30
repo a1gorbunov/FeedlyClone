@@ -10,6 +10,7 @@ import com.rometools.rome.io.FeedException;
 import com.rometools.rome.io.SyndFeedInput;
 import com.rometools.rome.io.XmlReader;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
@@ -19,6 +20,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * provide operations to parsing remote feed and map to object
@@ -27,6 +29,9 @@ import java.util.List;
 @Service
 public class FeedWorkerService {
     private static final Logger LOGGER = Logger.getLogger(FeedWorkerService.class.getSimpleName());
+
+    @Autowired
+    private RssCategoryService categoryService;
 
     public SyndFeedDTO readFeedFromUrl(String url) throws FeedServiceException {
         if (StringUtils.isEmpty(url)) {
@@ -85,13 +90,16 @@ public class FeedWorkerService {
 
     public List<SyndFeedDTO> getAggregateFeedForUser(UserDTO user) {
         List<SyndFeedDTO> result = new ArrayList<>();
-        if (user != null && user.getAccount() != null && CollectionUtils.isEmpty(user.getAccount().getRssCategories())){
-            user.getAccount().getRssCategories().stream().forEach(rssCategory -> {
-                SyndFeedDTO categoryFeed = readFeedForCategory(rssCategory);
-                if (categoryFeed != null){
-                    result.add(categoryFeed);
-                }
-            });
+        if (user != null && user.getAccount() != null ){
+            List<RssCategoryDTO> categories = categoryService.getCategoriesForAccount(user.getAccount());
+            if (!CollectionUtils.isEmpty(categories)){
+                categories.stream().forEach(rssCategory -> {
+                    SyndFeedDTO categoryFeed = readFeedForCategory(rssCategory);
+                    if (categoryFeed != null){
+                        result.add(categoryFeed);
+                    }
+                });
+            }
         }
         return result;
     }

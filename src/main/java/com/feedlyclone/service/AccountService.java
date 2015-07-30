@@ -29,22 +29,18 @@ public class AccountService {
     @Autowired
     private RssCategoryRepository categoryRepository;
 
-    private AccountMapper accountMapper = new AccountMapper();
+    @Autowired
+    private AccountMapper accountMapper;
 
     public AccountDTO save(@NotNull AccountDTO accountDTO){
         Account account = accountMapper.mapReverse(accountDTO);
-
-//        RssCategory category = categoryRepository.findOne(account.getRssCategories().iterator().next().getId());
-//        account.getRssCategories().clear();
-//        account.getRssCategories().add(category);
-
         account = accountRepository.save(account);
         accountDTO.setId(account.getId());
         return accountDTO;
     }
 
     @Transactional(readOnly = true)
-    public AccountDTO getAccountById(Long id){
+    public AccountDTO getAccountById(long id){
         AccountDTO accountDTO = null;
         Account foundedAccount = accountRepository.findOne(id);
         if (foundedAccount != null) {
@@ -59,12 +55,18 @@ public class AccountService {
         if (accountStored == null){
             throw new NotFoundException("account with id={"+accountId+"} not found");
         }
+        // get rss category for current account by specified title
         RssCategory categoryToStore = categoryRepository.getCategoryForAccountByTitle(feedTitle, accountStored.getId());
         if (categoryToStore == null){
+            // if category not found, create new category
             createNewCategoryList(feedTitle, Arrays.asList(newFeedUrl), accountStored);
         } else {
-            categoryToStore.getFeedUrls().add(newFeedUrl);
-            categoryRepository.save(categoryToStore);
+            // else update founded category
+            List<String> storedUrls = categoryToStore.getFeedUrls();
+            if (storedUrls != null && !storedUrls.contains(newFeedUrl)) {
+                categoryToStore.getFeedUrls().add(newFeedUrl);
+                categoryRepository.save(categoryToStore);
+            }
         }
         LOGGER.debug("feed={" + newFeedUrl + "} to account with id=" + accountId + " added succesfully");
     }

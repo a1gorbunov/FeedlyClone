@@ -22,9 +22,10 @@ public class FeedSecurityService {
     public UserDTO getCurrentUser() throws NotFoundException {
         org.springframework.security.core.userdetails.User user =
                 (org.springframework.security.core.userdetails.User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (user != null && StringUtils.isEmpty(user.getUsername())){
+        if (user != null && !StringUtils.isEmpty(user.getUsername())){
             return userService.getUser(user.getUsername());
+        } else {
+            throw new NotFoundException("no authenticated user found");
         }
-        return  null;
     }
 }

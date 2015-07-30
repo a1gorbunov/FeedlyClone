@@ -1,15 +1,19 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.domain.entity.RssCategory;
+import com.feedlyclone.domain.repository.AccountRepository;
 import com.feedlyclone.domain.repository.RssCategoryRepository;
+import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import com.feedlyclone.mapper.RssCategoryMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *  implement methods for work with user's feed categories
@@ -22,7 +26,11 @@ public class RssCategoryService {
     @Autowired
     private RssCategoryRepository categoryRepository;
 
-    private RssCategoryMapper categoryMapper = new RssCategoryMapper();
+    @Autowired
+    private AccountRepository accountRepository;
+
+    @Autowired
+    private RssCategoryMapper categoryMapper;
 
     @Transactional(readOnly = true)
     public List<RssCategoryDTO> getAll(){
@@ -65,5 +73,17 @@ public class RssCategoryService {
             categoryDTO = categoryMapper.map(category);
         }
         return categoryDTO;
+    }
+
+    @Transactional(readOnly = true)
+    public List<RssCategoryDTO> getCategoriesForAccount(AccountDTO accountDTO) {
+        List<RssCategoryDTO> result = new ArrayList<>();
+        if (accountDTO != null && accountDTO.getId() != null) {
+            List<RssCategory> categories = categoryRepository.getByAccountId(accountDTO.getId());
+            if (!CollectionUtils.isEmpty(categories)) {
+                categories.forEach(category -> result.add(categoryMapper.map(category)));
+            }
+        }
+        return result;
     }
 }

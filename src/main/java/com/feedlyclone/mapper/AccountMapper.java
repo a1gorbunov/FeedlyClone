@@ -6,6 +6,7 @@ import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import com.feedlyclone.dto.UserDTO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -13,6 +14,12 @@ import java.util.List;
 
 @Component
 public class AccountMapper implements FeedCustomMapper<Account, AccountDTO> {
+
+    @Autowired
+    private UserMapper userMapper;
+
+    @Autowired
+    private RssCategoryMapper categoryMapper;
 
     @Override
     public void mapAtoB(Account account, AccountDTO accountDTO) {

@@ -9,9 +9,18 @@
 
     <div class="panel panel-default">
         <div class="panel-heading">
-            <form th:action="@{/logout}" method="post">
-                <input type="submit" class="btn btn-default" value="Logout"/>
-            </form>
+            <table>
+                <tr>
+                    <td>
+                        <h3 id="userName">Welcome, <span th:text="${username}"></span></h3>
+                    </td>
+                    <td>
+                        <form th:action="@{/logout}" method="post" style="float: right;">
+                            <input type="submit" class="btn btn-default" value="Logout"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         </div>
     </div>
 
@@ -34,7 +43,7 @@
         </div>
     </div>
 
-    <div class="bs-example" th:if="${not #lists.isEmpty(categories)}">
+    <!--<div class="bs-example" th:if="${not #lists.isEmpty(categories)}">
         <div class="panel-group" id="accordion" >
             <div class="panel panel-default" th:each="cat : ${categories}">
                 <div class="panel-heading">
@@ -42,19 +51,43 @@
                         <a data-toggle="collapse" data-parent="#accordion" href="#collapseOne" th:text="${cat.title}"></a>
                     </h4>
                 </div>
-                <div id="collapseOne" class="panel-collapse collapse in" th:each="urls : ${cat.feedUrls}">
+                <div class="panel-collapse collapse in" th:each="url : ${cat.feedUrls}">
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item" th:text="${urls}">
+                            <a class="list-group-item" th:text="${url}" href="#" th:href="@{/feed/(url=${url})}">
                                 <span class="badge" >14</span>
                                 feed 1
-                            </li>
+                            </a>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>-->
+    <div id="categoryMenu" class="bs-example">
+        <div class="panel-group" id="accordion" >
+            <div class="panel panel-default colStub" style="display: none;">
+                <div class="panel-heading">
+                    <h4 class="panel-title">
+                        <a data-toggle="collapse colRef" data-parent="#accordion" href="#collapseOne"></a>
+                    </h4>
+                </div>
+                <div id="collapseOne" class="panel-collapse collapse in colId">
+                    <div class="panel-body">
+                        <ul class="list-group colUrlGroup">
+                            <a class="list-group-item colUrl" href="#">
+                                <span class="badge" >14</span>
+                                feed 1
+                            </a>
                         </ul>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script> loadCategories();</script>
 </div>
 </body>
 </html>

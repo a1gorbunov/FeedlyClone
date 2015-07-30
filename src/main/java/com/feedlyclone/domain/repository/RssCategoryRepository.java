@@ -1,9 +1,12 @@
 package com.feedlyclone.domain.repository;
 
+import com.feedlyclone.domain.entity.Account;
 import com.feedlyclone.domain.entity.RssCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+
+import java.util.List;
 
 public interface RssCategoryRepository extends JpaRepository<RssCategory, Long> {
 
@@ -14,4 +17,7 @@ public interface RssCategoryRepository extends JpaRepository<RssCategory, Long> 
 
     @Query("select cat from RssCategory cat join fetch cat.feedUrls where cat.id= :categoryId")
     RssCategory getCategoryWithUrls(@Param("categoryId") long categoryId);
+
+    @Query("select cat from RssCategory cat join cat.accounts ac where ac.id = :accountId")
+    List<RssCategory> getByAccountId(@Param("accountId") long id);
 }

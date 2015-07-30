@@ -19,16 +19,19 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Controller
 public class FeedController {
     private static final Logger LOGGER = Logger.getLogger(FeedController.class.getSimpleName());
-
-    private SyndFeedDTO feedHolder;
 
     @Autowired
     private FeedWorkerService feedWorkerService;
@@ -37,7 +40,12 @@ public class FeedController {
     private AccountService accountService;
 
     @Autowired
+    private RssCategoryService categoryService;
+
+    @Autowired
     private FeedSecurityService feedSecurityService;
+
+    private List<SyndFeedDTO> feedHolder = new ArrayList<>();
 
     /**
      * add new feed to user account and display chosen news band
@@ -45,21 +53,22 @@ public class FeedController {
     @RequestMapping(value = "/addFeed")
     public String addFeed(@RequestParam("newFeedValue") String newFeedUrl, Model model){
         LOGGER.debug("add new feed: " + newFeedUrl);
+        UserDTO user;
+        SyndFeedDTO feedNew = null;
         try {
-            feedHolder = feedWorkerService.readFeedFromUrl(newFeedUrl);
-        } catch (FeedServiceException e) {
-            LOGGER.error(e);
-            return "home";
+            user = feedSecurityService.getCurrentUser();
+        } catch (NotFoundException e) {
+            model.addAttribute("invalidate", e.getMessage());
+            return "login";
         }
-        if(feedHolder != null ) {
-            UserDTO user;
-            try {
-                user = feedSecurityService.getCurrentUser();
-            } catch (NotFoundException e) {
-                LOGGER.debug(e);
-                return "login";
-            }
-            String feedTitle = feedHolder.getTitle();
+        try {
+            feedNew = feedWorkerService.readFeedFromUrl(newFeedUrl);
+        } catch (FeedServiceException e) {
+            model.addAttribute("invalidate", "unexpected error during process url " + newFeedUrl);
+            return "error";
+        }
+        if(feedNew != null ) {
+            String feedTitle = feedNew.getTitle();
             if (user != null && user.getAccount() != null && !StringUtils.isEmpty(feedTitle)) {
                 AccountDTO account = user.getAccount();
                 try {
@@ -68,24 +77,25 @@ public class FeedController {
                     model.addAttribute("invalidate", "current account not found");
                     return "login";
                 }
-
-                model.addAttribute("feedMessages", feedHolder.getFeedMessages());
-                model.addAttribute("categoryName", feedTitle);
             }
         }
-        return "home";
+        return "redirect:home";
     }
 
     /**
      * return full description for user chosen news
      */
-    @RequestMapping(value = "/description/{id}")
+    @RequestMapping(value = "/descriptionFull")
     public
     @ResponseBody
-    String getDescription(@PathVariable String id) {
+    String getDescription(@RequestParam String id, @RequestParam String title) {
         LOGGER.debug("get description for id= " + id);
-        if (feedHolder != null && !StringUtils.isEmpty(id)) {
-            return feedHolder.getFeedMessages().get(Integer.valueOf(id)).getDescriptionFull();
+        if (feedHolder != null && !StringUtils.isEmpty(id) && !StringUtils.isEmpty(title)) {
+            List<SyndFeedDTO> feedMessage =
+                    feedHolder.stream().filter(syndFeedDTO -> title.equals(syndFeedDTO.getTitle())).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(feedMessage)){
+                return feedMessage.get(0).getFeedMessages().get(Integer.valueOf(id)).getDescriptionFull();
+            }
         }
         return "";
     }
@@ -102,19 +112,51 @@ public class FeedController {
             LOGGER.debug(e);
             return "login";
         }
-        if (user != null && StringUtils.isEmpty(user.getName())) {
-            modelMap.addAttribute("username", user.getName());
-            List<RssCategoryDTO> categories = user.getAccount().getRssCategories();
+        if (user != null && user.getAccount() != null) {
+            List<RssCategoryDTO> categories = categoryService.getCategoriesForAccount(user.getAccount());
             if (!CollectionUtils.isEmpty(categories)) {
-                modelMap.addAttribute("categories", user.getAccount().getRssCategories());
+                modelMap.addAttribute("categories", categories);
             }
-
-            List<SyndFeedDTO> allFeeds = feedWorkerService.getAggregateFeedForUser(user);
-            if(allFeeds != null ) {
-                //modelMap.addAttribute("feedMessages", feedHolder.getFeedMessages());
-                modelMap.addAttribute("categoryName", "All your feeds");
+            feedHolder = feedWorkerService.getAggregateFeedForUser(user);
+            if(!CollectionUtils.isEmpty(feedHolder)) {
+                modelMap.addAttribute("feedHolder", feedHolder);
             }
+            modelMap.addAttribute("username", user.getName());
+            modelMap.addAttribute("categoryName", "All your feeds");
         }
         return "home";
+    }
+
+    @RequestMapping(value = "/feed", method = RequestMethod.GET)
+    public String readFeed(@RequestParam String url, Model model){
+        SyndFeedDTO result;
+        try {
+            result = feedWorkerService.readFeedFromUrl(url);
+        } catch (FeedServiceException e) {
+            model.addAttribute("invalidate", "unexpected error during process url " + url);
+            return "error";
+        }
+        if (result != null){
+            feedHolder = new ArrayList<>(Arrays.asList(result));
+            model.addAttribute("feedHolder", feedHolder);
+        }
+        return "home";
+    }
+
+    @RequestMapping(value = "/categories", method = RequestMethod.GET, produces = "application/json")
+    public @ResponseBody List<RssCategoryDTO> getCategories(){
+        UserDTO user = null;
+        try {
+            user = feedSecurityService.getCurrentUser();
+        } catch (NotFoundException e) {
+            LOGGER.debug(e);
+        }
+        if (user != null && user.getAccount() != null) {
+            List<RssCategoryDTO> categories = categoryService.getCategoriesForAccount(user.getAccount());
+            if (!CollectionUtils.isEmpty(categories)) {
+                return categories;
+            }
+        }
+        return new ArrayList<>();
     }
 }

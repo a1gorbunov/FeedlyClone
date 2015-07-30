@@ -14,6 +14,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -44,6 +45,8 @@ public class FeedControllerTest extends BaseWebSpringTest{
 
     private SyndFeedDTO feedHolder;
 
+    private String testTitle = "test title";
+
     @Before
     public void setUp(){
         MockitoAnnotations.initMocks(this);
@@ -52,7 +55,7 @@ public class FeedControllerTest extends BaseWebSpringTest{
 
         final Date date = new Date();
         FeedMessageDTO feedMessage = new FeedMessageDTO();
-        feedMessage.setTitle("test title");
+        feedMessage.setTitle(testTitle);
         feedHolder = new SyndFeedDTO(Collections.singletonList(feedMessage), "description", "title", "link", date);
     }
 
@@ -72,12 +75,18 @@ public class FeedControllerTest extends BaseWebSpringTest{
                 .andExpect(MockMvcResultMatchers.model().attribute("feedMessages", feedHolder.getFeedMessages()))
                 .andExpect(MockMvcResultMatchers.model().attribute("categoryName", feedHolder.getTitle()));
 
-        doThrow(new NotFoundException("")).when(accountService).addFeedToAccount(any(), any(), any());
-        mvc.perform(MockMvcRequestBuilders.post("/addFeed").param("newFeedValue", ""))
-                .andExpect(status().isOk())
+        doThrow(new NotFoundException("")).when(accountService).addFeedToAccount(1L, "title", "");
+        ResultActions result = mvc.perform(MockMvcRequestBuilders.post("/addFeed").param("newFeedValue", ""));
+                result.andExpect(status().isOk())
                 .andExpect(MockMvcResultMatchers.forwardedUrl("login"))
                 .andExpect(MockMvcResultMatchers.model().attributeDoesNotExist("feedMessages", "categoryName"))
-                .andExpect(MockMvcResultMatchers.model().attribute("invalidate", any()));
-    }
+                .andExpect(MockMvcResultMatchers.model().attributeExists("invalidate"));
 
+        // if not user yet
+        doThrow(new NotFoundException("")).when(feedSecurityService).getCurrentUser();
+        mvc.perform(MockMvcRequestBuilders.post("/addFeed").param("newFeedValue", ""))
+                .andExpect(MockMvcResultMatchers.forwardedUrl("login"))
+                .andExpect(MockMvcResultMatchers.model().attributeDoesNotExist("feedMessages", "categoryName"))
+                .andExpect(MockMvcResultMatchers.model().attributeExists("invalidate"));
+    }
 }

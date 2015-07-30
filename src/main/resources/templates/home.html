@@ -36,37 +36,39 @@
             </form>
         </div>
 
-        <div th:if="${not #lists.isEmpty(feedMessages)}" class="newsBand">
-            <div id="feedlyHeader" class="topMargin"><h3 th:text="${categoryName}">Category name</h3></div>
-            <div id="feedlyPart">
-                <div id="section_entries" class="col-sm-4" style="width: inherit;">
-                    <div>
-                        <ul class="list-group">
-                            <li class="list-group-item" th:each="feedMessage : ${feedMessages}">
-                                <table>
-                                    <tr>
-                                        <td><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></td>
-                                        <td class="paddingLeft">
-                                            <div><a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a>
-                                            </div>
-                                            <div class="contentPadding">
-                                        <span th:if="${#strings.length(feedMessage.descriptionClean) gt 500}"
-                                              th:text="${#strings.substring(feedMessage.descriptionClean,0, 500)}">Description</span>
-                                        <span th:if="${#strings.length(feedMessage.descriptionClean) le 500}"
-                                              th:text="${feedMessage.descriptionClean}">Description</span>
-                                            </div>
-                                            <div><span class="subText" th:text="${feedMessage.publishDate}">Publish date</span></div>
-                                        </td>
-                                        <td class="paddingLeft">
-                                            <a th:onclick="'javascript:openFullMode(\'' + ${feedMessage.id} + '\');'" href="javascript:">full mode</a>
-                                        </td>
-                                    </tr>
-                                </table>
-                            </li>
-                        </ul>
+        <div th:if="${not #lists.isEmpty(feedHolder)}" class="newsBand">
+            <div th:each="feedCategory : ${feedHolder}">
+                <div id="feedlyHeader" class="topMargin"><h3 th:text="${feedCategory.title}">Category name</h3></div>
+                <div id="feedlyPart">
+                    <div id="section_entries" class="col-sm-4" style="width: inherit;">
+                        <div>
+                            <ul class="list-group">
+                                <li class="list-group-item" th:each="feedMessage : ${feedCategory.feedMessages}">
+                                    <table>
+                                        <tr>
+                                            <td><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></td>
+                                            <td class="paddingLeft">
+                                                <div><a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a>
+                                                </div>
+                                                <div class="contentPadding">
+                                            <span th:if="${#strings.length(feedMessage.descriptionClean) gt 450}"
+                                                  th:text="${#strings.substring(feedMessage.descriptionClean,0, 450)}">Description</span>
+                                            <span th:if="${#strings.length(feedMessage.descriptionClean) le 450}"
+                                                  th:text="${feedMessage.descriptionClean}">Description</span>
+                                                </div>
+                                                <div><span class="subText" th:text="${feedMessage.publishDate}">Publish date</span></div>
+                                            </td>
+                                            <td class="paddingLeft">
+                                                <a th:onclick="'javascript:openFullMode(\'' + ${feedMessage} + '\');'" href="javascript:">full
+                                                    mode</a>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
                 </div>
-
             </div>
         </div>
 

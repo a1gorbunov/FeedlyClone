@@ -1,7 +1,6 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.BaseSpringTest;
-import com.feedlyclone.domain.repository.RssCategoryRepository;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import org.junit.Test;

@@ -76,8 +76,8 @@ public class SyndFeedDTO {
     }
 
     public void addFeedMessages(List<FeedMessageDTO> feedMessages){
-        if (feedMessages == null){
-            feedMessages = new ArrayList<>();
+        if (this.feedMessages == null){
+            this.feedMessages = new ArrayList<>();
         }
         this.feedMessages.addAll(feedMessages);
     }

@@ -5,7 +5,7 @@ import com.feedlyclone.domain.entity.User;
 import com.feedlyclone.domain.repository.UserRepository;
 import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.exceptions.NotFoundException;
-import org.springframework.beans.BeanUtils;
+import com.feedlyclone.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
@@ -16,10 +16,12 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserMapper userMapper;
+
     public UserDTO save(UserDTO userDTO) throws DataIntegrityViolationException {
         if (userDTO != null){
-            User user = new User();
-            BeanUtils.copyProperties(userDTO, user);
+            User user = userMapper.mapReverse(userDTO);
             user = userRepository.save(user);
             userDTO.setId(user.getId());
         }
@@ -31,9 +33,7 @@ public class UserService {
         if (user == null){
             throw new NotFoundException("user={"+name+"} not found");
         }
-        UserDTO userDTO = new UserDTO();
-        BeanUtils.copyProperties(user, userDTO);
-        return userDTO;
+        return userMapper.map(user);
     }
 
     public void addEmptyUser(String username, String password) throws DataIntegrityViolationException{

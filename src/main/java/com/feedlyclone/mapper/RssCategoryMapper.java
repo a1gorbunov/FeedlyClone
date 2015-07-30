@@ -41,7 +41,7 @@ public class RssCategoryMapper implements FeedCustomMapper<RssCategory, RssCateg
                 ArrayList<Account> accounts = new ArrayList<>();
                 categoryDTO.getAccounts().forEach(accountDTO -> {
                     Account account = new Account();
-                    category.setId(account.getId());
+                    account.setId(accountDTO.getId());
                     accounts.add(account);
                 });
                 category.setAccounts(accounts);
