@@ -1,12 +1,10 @@
 package com.feedlyclone.web;
 
-import com.feedlyclone.domain.entity.RssCategory;
 import com.feedlyclone.dto.AccountDTO;
 import com.feedlyclone.dto.FeedMessageDTO;
 import com.feedlyclone.dto.RssCategoryDTO;
 import com.feedlyclone.dto.SyndFeedDTO;
 import com.feedlyclone.dto.UserDTO;
-import com.feedlyclone.exceptions.FeedServiceException;
 import com.feedlyclone.exceptions.NotFoundException;
 import com.feedlyclone.service.AccountService;
 import com.feedlyclone.service.FeedSecurityService;
@@ -24,7 +22,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
 
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;

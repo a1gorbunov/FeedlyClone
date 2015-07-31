@@ -1,41 +1,22 @@
 package com.feedlyclone.service;
 
 import com.feedlyclone.BaseSpringTest;
-import com.feedlyclone.dto.AccountDTO;
-import com.feedlyclone.dto.FeedMessageDTO;
 import com.feedlyclone.dto.SyndFeedDTO;
-import com.feedlyclone.dto.UserDTO;
 import com.feedlyclone.exceptions.FeedServiceException;
-import com.feedlyclone.exceptions.NotFoundException;
-import org.junit.Before;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.util.CollectionUtils;
 
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Collections;
-import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
 
 public class FeedWorkerServiceTest extends BaseSpringTest{
 
     @Autowired
     private FeedWorkerService feedWorkerService;
-
-    @Autowired
-    private AccountService accountService;
 
     @Test
     public void readFeedFromUrlTest() throws FeedServiceException {

@@ -17,12 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,9 +32,6 @@ public class FeedController {
     private static final Logger LOGGER = Logger.getLogger(FeedController.class.getSimpleName());
 
     @Autowired
-    private FeedWorkerService feedWorkerService;
-
-    @Autowired
     private AccountService accountService;
 
     @Autowired
@@ -44,6 +39,13 @@ public class FeedController {
 
     @Autowired
     private FeedSecurityService feedSecurityService;
+
+    private FeedWorkerService feedWorkerService;
+
+    @Autowired
+    public void setFeedWorkerService(FeedWorkerService feedWorkerService){
+        this.feedWorkerService = feedWorkerService;
+    }
 
     private List<SyndFeedDTO> feedHolder = new ArrayList<>();
 
