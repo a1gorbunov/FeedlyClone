@@ -104,3 +104,12 @@ body{
     background-size: 16px;
     cursor: pointer;
 }
+
+.item-image{
+    max-height: 170px;
+    max-width: 150px;
+}
+
+.contentTable{
+    vertical-align: top;
+}

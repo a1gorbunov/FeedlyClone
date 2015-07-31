@@ -34,9 +34,8 @@ public class CommonFeedUtil {
                 feedMessage.setTitle(syndEntry.getTitle());
                 feedMessage.setPublishDate(syndEntry.getPublishedDate());
                 if (!CollectionUtils.isEmpty(syndEntry.getEnclosures())) {
-                    feedMessage.setImage(
                             syndEntry.getEnclosures().stream().filter(syndEnclosure -> syndEnclosure.getType().contains("image"))
-                                    .findFirst().get().getUrl());
+                                    .findFirst().ifPresent(syndEnclosure1 -> feedMessage.setImage(syndEnclosure1.getUrl()));
                 }
                 result.add(feedMessage);
             }

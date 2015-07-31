@@ -54,7 +54,7 @@ public class FeedController {
     public String addFeed(@RequestParam("newFeedValue") String newFeedUrl, Model model){
         LOGGER.debug("add new feed: " + newFeedUrl);
         UserDTO user;
-        SyndFeedDTO feedNew = null;
+        SyndFeedDTO feedNew;
         try {
             user = feedSecurityService.getCurrentUser();
         } catch (NotFoundException e) {

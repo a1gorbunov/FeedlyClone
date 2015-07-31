@@ -44,9 +44,9 @@
                         <div>
                             <ul class="list-group">
                                 <li class="list-group-item" th:each="feedMessage : ${feedCategory.feedMessages}">
-                                    <table>
+                                    <table class="contentTable">
                                         <tr>
-                                            <td><img th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></td>
+                                            <td><img class="item-image" th:src="${feedMessage.image}" src="../static/images/feedly-logo-black.png"/></td>
                                             <td class="paddingLeft">
                                                 <div><a th:href="${feedMessage.link}" th:text="${feedMessage.title}">Title</a>
                                                 </div>
